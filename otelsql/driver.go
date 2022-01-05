@@ -201,6 +201,14 @@ func (c *otelConn) createPingFunc(conn driver.Conn) pingFunc {
 	}
 }
 
+func (c *otelConn) CheckNamedValue(v *driver.NamedValue) error {
+	if nvc, ok := c.Conn.(driver.NamedValueChecker); ok {
+		return nvc.CheckNamedValue(v)
+	}
+
+	return driver.ErrSkip
+}
+
 //------------------------------------------------------------------------------
 
 var _ driver.Execer = (*otelConn)(nil)
